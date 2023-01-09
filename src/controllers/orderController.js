@@ -4,9 +4,17 @@ async function store(req, res){
     const newOrder = new Order(req.body);
     try {
         const savedOrder = await newOrder.save();
-        res.status(200).json(savedOrder);
+        res.status(201).send({
+            'code': 201,
+            'status': 'OK',
+            'data': savedOrder
+        });
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).send({
+            'code':500,
+            'status': 'Internal Server Error',
+            'error' : error
+        });
     }
 }
 
@@ -15,36 +23,68 @@ async function update(req, res){
         const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {
             $set: req.body
         }, {new:true});
-        res.status(200).json(updatedOrder);
+        res.status(201).send({
+            'code': 201,
+            'status': 'OK',
+            'data': savedOrder
+        });
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).send({
+            'code':500,
+            'status': 'Internal Server Error',
+            'error' : error
+        });
     }
 }
 
 async function destroy(req, res){
     try {
         await Order.findByIdAndDelete(req.params.id);
-        res.status(200).json("Order has been deleted");
+        res.status(200).send({
+            'code': 200,
+            'status': 'OK',
+            'data': 'Data has been deleted!'
+        });
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).send({
+            'code':500,
+            'status': 'Internal Server Error',
+            'error' : error
+        });
     }
 }
 
 async function show(req, res){
     try {
         const Orders = await Order.find({userId: req.user.id});
-        res.status(200).json(Orders);
+        res.status(200).send({
+            'code': 200,
+            'status': 'OK',
+            'data': Orders
+        });
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).send({
+            'code':500,
+            'status': 'Internal Server Error',
+            'error' : error
+        });
     }
 }
 
 async function index(req, res){
     try{
         const Orders = await Order.find();
-        res.status(200).json(Orders);
+        res.status(200).send({
+            'code': 200,
+            'status': 'OK',
+            'data': Orders
+        });
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).send({
+            'code':500,
+            'status': 'Internal Server Error',
+            'error' : error
+        });
     }
 }
 
@@ -71,7 +111,11 @@ async function income(req, res){
         ]);
         res.status(200).json(income);
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).send({
+            'code':500,
+            'status': 'Internal Server Error',
+            'error' : error
+        });
     }
 }
 
